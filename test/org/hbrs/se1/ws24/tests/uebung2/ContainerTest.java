@@ -6,8 +6,7 @@ import org.hbrs.se1.ws24.exercises.uebung2.exceptions.ContainerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ContainerTest {
 
@@ -37,6 +36,13 @@ public class ContainerTest {
             assertEquals(container.removeMember(0),"Das Member-Objekt mit der ID [0] wurde gelöscht!");
             container.dump();
             assertEquals(container.size(),1);
+
+            try {
+                container.addMember(concreteMember2);
+            } catch (Exception e){
+                //assertEquals(e.getMessage(),"Das Member-Objekt mit der ID [1] ist bereits vorhanden!");
+                assertTrue(e instanceof ContainerException);
+            }
 
             //Doppelt hinzufügen (neg)
             assertThrows(ContainerException.class, () -> {
