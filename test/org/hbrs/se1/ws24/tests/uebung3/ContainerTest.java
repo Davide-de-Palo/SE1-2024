@@ -45,7 +45,6 @@ public class ContainerTest {
         try {
             container.store();
         } catch (Exception e){
-            System.out.println(e.getMessage());
             //assertEquals(e.getMessage(),"Das Member-Objekt mit der ID [1] ist bereits vorhanden!");
             assertTrue(e instanceof PersistenceException);
         }
@@ -96,7 +95,6 @@ public class ContainerTest {
             assertEquals(container.size(),0);
             container.load();
             assertEquals(container.size(),2);
-            System.out.println(container.getCurrentList());
         } catch (Exception e){
             e.printStackTrace();
         }
