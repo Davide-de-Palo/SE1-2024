@@ -1,6 +1,8 @@
 package org.hbrs.se1.ws24.exercises.uebung3.persistence;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.hbrs.se1.ws24.exercises.uebung2.Member;
+
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
@@ -21,7 +23,17 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
      * https://www.digitalocean.com/community/tutorials/objectoutputstream-java-write-object-file
      * (Last Access: Oct, 15th 2024)
      */
-    public void save(List<E> member) throws PersistenceException  {
+    public void save(List<E> members) throws PersistenceException, IOException {
+        FileOutputStream fos = new FileOutputStream(location);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        // write object to file
+        oos.writeObject(members);
+
+        // closing resources
+        oos.close();
+        fos.close();
+
 
     }
 
@@ -31,7 +43,7 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
      * Some coding examples come for free :-)
      * Take also a look at the import statements above ;-!
      */
-    public List<E> load() throws PersistenceException  {
+    public List<E> load() throws PersistenceException, IOException, ClassNotFoundException {
         // Some Coding hints ;-)
 
         // ObjectInputStream ois = null;
@@ -52,6 +64,24 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
         // return newListe
 
         // and finally close the streams
-        return null;
+
+        /** try{
+        } catch (IOException e) {
+            throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable,"Die Datei existiert nicht");
+        }
+        }**/
+
+        List<E> members = null;
+        FileInputStream fis = new FileInputStream(location);
+
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        Object object = ois.readObject();
+        ois.close();
+        fis.close();
+
+        if (object instanceof List<?>) {
+            members = (List<E>) object;
+        }
+        return members;
     }
 }
