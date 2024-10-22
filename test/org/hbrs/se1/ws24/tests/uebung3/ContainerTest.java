@@ -23,6 +23,16 @@ public class ContainerTest {
     @BeforeEach
     public void setUp() throws ContainerException {
         container = Container.getInstance();
+
+        //Leerer Container
+        List<Member> members = container.getCurrentList();
+        ArrayList<Integer> membersIDs = new ArrayList<Integer>();
+        for (Member member : members) {
+            membersIDs.add(member.getID());
+        }
+        for(Integer memberID : membersIDs){
+            container.removeMember(memberID);
+        }
         concreteMember = new ConcreteMember();
         concreteMember2 = new ConcreteMember();
         container.addMember(concreteMember);
